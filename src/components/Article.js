@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import ApiService from '../api-service';
 import styled from 'styled-components';
 
 import CommentSection from './CommentSection';
@@ -21,21 +21,69 @@ const Description = styled.div``;
 
 const Article = ({ id }) => {
   const [article, setArticle] = useState();
+  const [commentBatch, setCommentBatch] = useState([]);
+  const [leftBoundary, setLeftBoundary] = useState(0);
+  const [rightBoundary, setRightBoundary] = useState(5);
+  const [isMoreDisabled, setIsMoreDisabled] = useState(false);
+  const [isPrevDisabled, setIsPrevDisabled] = useState(false);
+
+  const handlePrevComments = () => {
+    const articleKids = article.kids;
+    const indexToSubtract = leftBoundary - 5;
+    const newCommentBatch = articleKids.slice(indexToSubtract, leftBoundary);
+
+    setCommentBatch(newCommentBatch);
+    setLeftBoundary(indexToSubtract);
+    setRightBoundary(leftBoundary);
+
+    if (isMoreDisabled) {
+      setIsMoreDisabled(false);
+    }
+
+    if (indexToSubtract <= 0) {
+      setIsPrevDisabled(true);
+      return;
+    }
+  }
+
+  const handleMoreComments = () => {
+    const articleKids = article.kids;
+    const indexToAdd = rightBoundary + 5;
+    const newCommentBatch = articleKids.slice(rightBoundary, indexToAdd);
+
+    setCommentBatch(newCommentBatch);
+    setLeftBoundary(rightBoundary);
+    setRightBoundary(indexToAdd);
+    
+    if (isPrevDisabled) {
+      setIsPrevDisabled(false);
+    }
+    
+    if (newCommentBatch.length < 5 || indexToAdd >= articleKids.length) {
+      setIsMoreDisabled(true);
+      return;
+    }
+  };
 
   useEffect(() => {
-    const getArticle = async () => {
+    (async () => {
       try {
-        const response = await axios.get(
-          `https://hacker-news.firebaseio.com/v0/item/${id}.json`
-        );
+        const response = await ApiService.getArticleFromId(id);
         setArticle(response.data);
+
+        const newCommentBatch = response.data.kids.slice(0, 5);
+        setCommentBatch(newCommentBatch);
+
+        
+        if (response.data.kids.length <= newCommentBatch.length) {
+          setIsMoreDisabled(true);
+        }
+
+        setIsPrevDisabled(true);
       } catch (error) {
-        // what is a better way to handle errors instead of alerting?
         alert(error);
       }
-    };
-
-    getArticle();
+    })();
     // why do we pass the prop id into useffect [id]?
     // what happens if it's a different id?
     // does useEffect need a dependency to rerender?
@@ -46,15 +94,20 @@ const Article = ({ id }) => {
     // any other ways to show a loading state?
     return <div>Loading...</div>;
   }
+  
   return (
-    <ArticleContainer>
-      <ArticleTitle>{article.title}</ArticleTitle>
-      <Description dangerouslySetInnerHTML={{ __html: article.text }} />
-      <h2>Comments</h2>
-      {/* why do we want to paginate? */}
-      {/* loading a batch of comments first VS loading independently in a comment component */}
-      <CommentSection commentBatch={article.kids.slice(0, 5)}/>
-    </ArticleContainer>
+    <>
+      <ArticleContainer>
+        <ArticleTitle>{article.title}</ArticleTitle>
+        <Description dangerouslySetInnerHTML={{ __html: article.text }} />
+        <h2>Comments</h2>
+        <button disabled={isPrevDisabled} onClick={handlePrevComments}>Prev</button>
+        <button disabled={isMoreDisabled} onClick={handleMoreComments}>More</button>
+        {/* why do we want to paginate? */}
+        {/* loading a batch of comments first VS loading independently in a comment component */}
+        <CommentSection commentBatch={commentBatch} />
+      </ArticleContainer>
+    </>
   );
 };
 

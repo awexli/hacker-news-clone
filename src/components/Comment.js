@@ -6,6 +6,7 @@ const CommentContainer = styled.div`
   border-radius: 4px;
   margin-bottom: 8px;
   box-shadow: 5px 5px 5px grey;
+  font-size: 15px;
 `;
 
 const CommentAuthor = styled.p`

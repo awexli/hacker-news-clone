@@ -1,37 +1,40 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import ApiService from '../api-service';
 
 import Comment from './Comment';
 
 const CommentSection = ({ commentBatch }) => {
   const [comments, setComments] = useState();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const getComments = async () => {
+    (async () => {
+      setLoading(true);
       try {
         const comments = commentBatch.map((commentId) => {
-          return axios.get(
-            `https://hacker-news.firebaseio.com/v0/item/${commentId}.json`
-          );
+          return ApiService.getCommentFromId(commentId);
         });
         setComments(await Promise.all(comments));
       } catch (error) {
-        return alert(error);
+        alert(error);
       }
-    };
-
-    getComments();
+      setLoading(false);
+    })();
   }, [commentBatch]);
 
   if (!comments) {
-    return <div>Loading...</div>;
+    return <div>Gathering comments...</div>;
   }
 
   return (
     <>
-      {comments.map((comment, i) => {
-        return <Comment key={i} data={comment.data} />;
-      })}
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        comments.map((comment, i) => {
+          return <Comment key={i} data={comment.data} />;
+        })
+      )}
     </>
   );
 };
