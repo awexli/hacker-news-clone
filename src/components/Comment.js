@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const CommentContainer = styled.div`
   margin-bottom: 10px;
-  font-size: 15px;
+  font-size: 14px;
 `;
 
 const CommentAuthor = styled.p`

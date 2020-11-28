@@ -5,19 +5,27 @@ import styled from 'styled-components';
 import CommentSection from './CommentSection';
 import { Button } from '../styled/Button';
 
-const ArticleContainer = styled.div`
-  padding: 0 1rem;
-  margin: 8px auto;
-  max-width: 800px;
+const MainContainer = styled.main`
+  background-color: #f7f7f7;
+  margin: 0 auto;
+  max-width: 1440px;
+  min-height: 100vh;
+`;
+
+const ArticleContainer = styled.article`
+  padding: 1em 1em 10em 1em;
 `;
 
 const ArticleTitle = styled.h1`
   font-size: 1.5rem;
+  margin-top: 0;
 `;
 
-const Description = styled.div``;
+const Description = styled.div`
+  font-size: 14px;
+`;
 
-const numOfCommentsToAdd = 1;
+const numOfCommentsToAdd = 25;
 
 const Article = ({ id }) => {
   const [article, setArticle] = useState();
@@ -33,7 +41,10 @@ const Article = ({ id }) => {
     setCurrentBoundary(nextBoundary);
     setIncomingComments(newCommentBatch);
 
-    if (newCommentBatch.length < numOfCommentsToAdd || nextBoundary >= articleKids.length) {
+    if (
+      newCommentBatch.length < numOfCommentsToAdd ||
+      nextBoundary >= articleKids.length
+    ) {
       setIsMoreDisabled(true);
       return;
     }
@@ -67,7 +78,7 @@ const Article = ({ id }) => {
   }
 
   return (
-    <>
+    <MainContainer>
       <ArticleContainer>
         <ArticleTitle>{article.title}</ArticleTitle>
         <Description dangerouslySetInnerHTML={{ __html: article.text }} />
@@ -76,14 +87,16 @@ const Article = ({ id }) => {
         {/* loading a batch of comments first VS loading independently in a comment component */}
         <CommentSection
           ButtonMore={
-            <Button disabled={isMoreDisabled} onClick={handleMoreComments}>
-              More
-            </Button>
+            <>
+              {!isMoreDisabled && (
+                <Button onClick={handleMoreComments}>More</Button>
+              )}
+            </>
           }
           incomingComments={incomingComments}
         />
       </ArticleContainer>
-    </>
+    </MainContainer>
   );
 };
 
