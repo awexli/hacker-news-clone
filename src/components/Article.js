@@ -3,6 +3,7 @@ import ApiService from '../api-service';
 import styled from 'styled-components';
 
 import CommentSection from './CommentSection';
+import { Button } from '../styled/Button';
 
 const ArticleContainer = styled.div`
   padding: 0 1rem;
@@ -16,7 +17,7 @@ const ArticleTitle = styled.h1`
 
 const Description = styled.div``;
 
-const numOfCommentsToAdd = 25;
+const numOfCommentsToAdd = 1;
 
 const Article = ({ id }) => {
   const [article, setArticle] = useState();
@@ -32,7 +33,7 @@ const Article = ({ id }) => {
     setCurrentBoundary(nextBoundary);
     setIncomingComments(newCommentBatch);
 
-    if (newCommentBatch.length < 5 || nextBoundary >= articleKids.length) {
+    if (newCommentBatch.length < numOfCommentsToAdd || nextBoundary >= articleKids.length) {
       setIsMoreDisabled(true);
       return;
     }
@@ -75,9 +76,9 @@ const Article = ({ id }) => {
         {/* loading a batch of comments first VS loading independently in a comment component */}
         <CommentSection
           ButtonMore={
-            <button disabled={isMoreDisabled} onClick={handleMoreComments}>
+            <Button disabled={isMoreDisabled} onClick={handleMoreComments}>
               More
-            </button>
+            </Button>
           }
           incomingComments={incomingComments}
         />

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import ApiService from '../api-service';
 
 import Comment from './Comment';
+import { Button } from '../styled/Button'
 
 const CommentSection = ({ incomingComments, ButtonMore }) => {
   const [comments, setComments] = useState([]);
@@ -34,7 +35,8 @@ const CommentSection = ({ incomingComments, ButtonMore }) => {
       {comments.map((comment, i) => {
         return <Comment key={i} data={comment.data} />;
       })}
-      {loading ? <button disabled>Loading more comments...</button> : ButtonMore}
+      <hr />
+      {loading ? <Button disabled>Loading...</Button> : ButtonMore}
     </>
   );
 };
