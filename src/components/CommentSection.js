@@ -3,7 +3,7 @@ import ApiService from '../api-service';
 
 import Comment from './Comment';
 
-const CommentSection = ({ commentBatch }) => {
+const CommentSection = ({ allComments, ButtonMore }) => {
   const [comments, setComments] = useState();
   const [loading, setLoading] = useState(false);
 
@@ -11,7 +11,7 @@ const CommentSection = ({ commentBatch }) => {
     (async () => {
       setLoading(true);
       try {
-        const comments = commentBatch.map((commentId) => {
+        const comments = allComments.map((commentId) => {
           return ApiService.getCommentFromId(commentId);
         });
         setComments(await Promise.all(comments));
@@ -20,7 +20,7 @@ const CommentSection = ({ commentBatch }) => {
       }
       setLoading(false);
     })();
-  }, [commentBatch]);
+  }, [allComments]);
 
   if (!comments) {
     return <div>Gathering comments...</div>;
@@ -28,13 +28,10 @@ const CommentSection = ({ commentBatch }) => {
 
   return (
     <>
-      {loading ? (
-        <div>Loading...</div>
-      ) : (
-        comments.map((comment, i) => {
-          return <Comment key={i} data={comment.data} />;
-        })
-      )}
+      {comments.map((comment, i) => {
+        return <Comment key={i} data={comment.data} />;
+      })}
+      {loading ? <button disabled>Loading...</button> : ButtonMore}
     </>
   );
 };

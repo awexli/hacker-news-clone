@@ -6,10 +6,7 @@ import CommentSection from './CommentSection';
 
 const ArticleContainer = styled.div`
   padding: 0 1rem;
-  border: 1px solid black;
-  border-radius: 4px;
   margin: 8px auto;
-  box-shadow: 5px 5px 5px grey;
   max-width: 800px;
 `;
 
@@ -19,47 +16,25 @@ const ArticleTitle = styled.h1`
 
 const Description = styled.div``;
 
+const numOfCommentsToAdd = 5;
+
 const Article = ({ id }) => {
   const [article, setArticle] = useState();
-  const [commentBatch, setCommentBatch] = useState([]);
-  const [leftBoundary, setLeftBoundary] = useState(0);
-  const [rightBoundary, setRightBoundary] = useState(5);
+  const [allComments, setAllComments] = useState([]);
+  const [currentBoundary, setCurrentBoundary] = useState(numOfCommentsToAdd);
   const [isMoreDisabled, setIsMoreDisabled] = useState(false);
-  const [isPrevDisabled, setIsPrevDisabled] = useState(false);
-
-  const handlePrevComments = () => {
-    const articleKids = article.kids;
-    const indexToSubtract = leftBoundary - 5;
-    const newCommentBatch = articleKids.slice(indexToSubtract, leftBoundary);
-
-    setCommentBatch(newCommentBatch);
-    setLeftBoundary(indexToSubtract);
-    setRightBoundary(leftBoundary);
-
-    if (isMoreDisabled) {
-      setIsMoreDisabled(false);
-    }
-
-    if (indexToSubtract <= 0) {
-      setIsPrevDisabled(true);
-      return;
-    }
-  }
 
   const handleMoreComments = () => {
     const articleKids = article.kids;
-    const indexToAdd = rightBoundary + 5;
-    const newCommentBatch = articleKids.slice(rightBoundary, indexToAdd);
+    const nextBoundary = currentBoundary + numOfCommentsToAdd;
+    const newCommentBatch = articleKids.slice(currentBoundary, nextBoundary);
 
-    setCommentBatch(newCommentBatch);
-    setLeftBoundary(rightBoundary);
-    setRightBoundary(indexToAdd);
-    
-    if (isPrevDisabled) {
-      setIsPrevDisabled(false);
-    }
-    
-    if (newCommentBatch.length < 5 || indexToAdd >= articleKids.length) {
+    setCurrentBoundary(nextBoundary);
+
+    // Better to do this in CommentSection component instead?
+    setAllComments([...allComments, ...newCommentBatch]);
+
+    if (newCommentBatch.length < 5 || nextBoundary >= articleKids.length) {
       setIsMoreDisabled(true);
       return;
     }
@@ -71,15 +46,12 @@ const Article = ({ id }) => {
         const response = await ApiService.getArticleFromId(id);
         setArticle(response.data);
 
-        const newCommentBatch = response.data.kids.slice(0, 5);
-        setCommentBatch(newCommentBatch);
+        const newCommentBatch = response.data.kids.slice(0, numOfCommentsToAdd);
+        setAllComments(newCommentBatch);
 
-        
         if (response.data.kids.length <= newCommentBatch.length) {
           setIsMoreDisabled(true);
         }
-
-        setIsPrevDisabled(true);
       } catch (error) {
         alert(error);
       }
@@ -94,18 +66,24 @@ const Article = ({ id }) => {
     // any other ways to show a loading state?
     return <div>Loading...</div>;
   }
-  
+
   return (
     <>
       <ArticleContainer>
         <ArticleTitle>{article.title}</ArticleTitle>
         <Description dangerouslySetInnerHTML={{ __html: article.text }} />
         <h2>Comments</h2>
-        <button disabled={isPrevDisabled} onClick={handlePrevComments}>Prev</button>
-        <button disabled={isMoreDisabled} onClick={handleMoreComments}>More</button>
         {/* why do we want to paginate? */}
         {/* loading a batch of comments first VS loading independently in a comment component */}
-        <CommentSection commentBatch={commentBatch} />
+        <CommentSection
+          ButtonMore={
+            <button disabled={isMoreDisabled} onClick={handleMoreComments}>
+              More
+            </button>
+          }
+          allComments={allComments}
+        />
+        {/* <button disabled={isPrevDisabled} onClick={handlePrevComments}>Prev</button> */}
       </ArticleContainer>
     </>
   );

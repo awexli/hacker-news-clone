@@ -1,19 +1,22 @@
 import styled from 'styled-components';
 
 const CommentContainer = styled.div`
-  padding: 0 1rem 1rem 1rem;
-  border: 1px solid black;
-  border-radius: 4px;
-  margin-bottom: 8px;
-  box-shadow: 5px 5px 5px grey;
+  margin-bottom: 10px;
   font-size: 15px;
 `;
 
 const CommentAuthor = styled.p`
   font-weight: 700;
+  margin-block-start: 8px;
+  margin-block-end: 8px;
 `;
 
 const CommentDescription = styled.div`
+  p {
+    margin-block-start: 8px;
+    margin-block-end: 8px;
+  }
+  
   a {
     max-width: 300px;
     display: block;
