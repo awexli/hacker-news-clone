@@ -1,20 +1,31 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const flash = keyframes`
+  from {
+    background-color: #fff0d6;
+  }
+
+  to {
+    transform: #f7f7f7;
+  }
+`;
 
 const CommentContainer = styled.div`
-  margin-bottom: 10px;
   font-size: 14px;
+  max-width: 60em;
+  animation: ${flash} 1s ease;
 `;
 
 const CommentAuthor = styled.p`
   font-weight: 700;
-  margin-block-start: 8px;
-  margin-block-end: 8px;
+  margin: 0;
+  padding: 1em 0 4px 0;
 `;
 
 const CommentDescription = styled.div`
   p {
-    margin-block-start: 8px;
-    margin-block-end: 8px;
+    margin-top: 8px;
+    margin-bottom: 0;
   }
   
   a {

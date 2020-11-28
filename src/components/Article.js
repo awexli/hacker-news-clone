@@ -23,6 +23,7 @@ const ArticleTitle = styled.h1`
 
 const Description = styled.div`
   font-size: 14px;
+  max-width: 60em;
 `;
 
 const numOfCommentsToAdd = 25;
@@ -82,7 +83,6 @@ const Article = ({ id }) => {
       <ArticleContainer>
         <ArticleTitle>{article.title}</ArticleTitle>
         <Description dangerouslySetInnerHTML={{ __html: article.text }} />
-        <h2>Comments</h2>
         {/* why do we want to paginate? */}
         {/* loading a batch of comments first VS loading independently in a comment component */}
         <CommentSection
