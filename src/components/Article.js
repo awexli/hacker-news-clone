@@ -16,11 +16,11 @@ const ArticleTitle = styled.h1`
 
 const Description = styled.div``;
 
-const numOfCommentsToAdd = 5;
+const numOfCommentsToAdd = 25;
 
 const Article = ({ id }) => {
   const [article, setArticle] = useState();
-  const [allComments, setAllComments] = useState([]);
+  const [incomingComments, setIncomingComments] = useState([]);
   const [currentBoundary, setCurrentBoundary] = useState(numOfCommentsToAdd);
   const [isMoreDisabled, setIsMoreDisabled] = useState(false);
 
@@ -30,9 +30,7 @@ const Article = ({ id }) => {
     const newCommentBatch = articleKids.slice(currentBoundary, nextBoundary);
 
     setCurrentBoundary(nextBoundary);
-
-    // Better to do this in CommentSection component instead?
-    setAllComments([...allComments, ...newCommentBatch]);
+    setIncomingComments(newCommentBatch);
 
     if (newCommentBatch.length < 5 || nextBoundary >= articleKids.length) {
       setIsMoreDisabled(true);
@@ -47,7 +45,7 @@ const Article = ({ id }) => {
         setArticle(response.data);
 
         const newCommentBatch = response.data.kids.slice(0, numOfCommentsToAdd);
-        setAllComments(newCommentBatch);
+        setIncomingComments(newCommentBatch);
 
         if (response.data.kids.length <= newCommentBatch.length) {
           setIsMoreDisabled(true);
@@ -64,7 +62,7 @@ const Article = ({ id }) => {
   if (!article) {
     // why do we want to show loading?
     // any other ways to show a loading state?
-    return <div>Loading...</div>;
+    return <div>Loading Article...</div>;
   }
 
   return (
@@ -81,9 +79,8 @@ const Article = ({ id }) => {
               More
             </button>
           }
-          allComments={allComments}
+          incomingComments={incomingComments}
         />
-        {/* <button disabled={isPrevDisabled} onClick={handlePrevComments}>Prev</button> */}
       </ArticleContainer>
     </>
   );

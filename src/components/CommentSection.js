@@ -3,26 +3,29 @@ import ApiService from '../api-service';
 
 import Comment from './Comment';
 
-const CommentSection = ({ allComments, ButtonMore }) => {
-  const [comments, setComments] = useState();
+const CommentSection = ({ incomingComments, ButtonMore }) => {
+  const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
       setLoading(true);
       try {
-        const comments = allComments.map((commentId) => {
+        const newCommentsPromises = incomingComments.map((commentId) => {
           return ApiService.getCommentFromId(commentId);
         });
-        setComments(await Promise.all(comments));
+
+        const newComments = await Promise.all(newCommentsPromises);
+
+        setComments([...comments, ...newComments]);
       } catch (error) {
         alert(error);
       }
       setLoading(false);
     })();
-  }, [allComments]);
+  }, [incomingComments]);
 
-  if (!comments) {
+  if (comments.length < 1) {
     return <div>Gathering comments...</div>;
   }
 
@@ -31,7 +34,7 @@ const CommentSection = ({ allComments, ButtonMore }) => {
       {comments.map((comment, i) => {
         return <Comment key={i} data={comment.data} />;
       })}
-      {loading ? <button disabled>Loading...</button> : ButtonMore}
+      {loading ? <button disabled>Loading more comments...</button> : ButtonMore}
     </>
   );
 };
