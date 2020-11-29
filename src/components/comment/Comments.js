@@ -25,11 +25,12 @@ const Comments = ({ allComments, indent, isReply }) => {
           currentIndex: 0,
           nextIndex: numOfCommentsToAdd,
         });
-
+        
         if (newCommentBatch.length < numOfCommentsToAdd) {
           setHasMore(false);
         }
-
+        
+        setCurrentIndex(numOfCommentsToAdd);  
         setComments(newCommentBatch);
       } catch (error) {
         alert(error);
