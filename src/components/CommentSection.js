@@ -15,19 +15,32 @@ const HorizontalLine = styled.hr`
   border: none;
 `;
 
-const numOfCommentsToAdd = 25;
-const CommentSection = ({ initialComments, allComments }) => {
+const numOfCommentsToAdd = 2;
+const CommentSection = ({ allComments, indent }) => {
   const [comments, setComments] = useState();
   const [currentIndex, setCurrentIndex] = useState(numOfCommentsToAdd);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
-    if (initialComments.length < numOfCommentsToAdd) {
-      setHasMore(false);
-    }
-    setComments(initialComments);
-  }, [initialComments]);
+    (async () => {
+      if (!allComments) return;
+
+      try {
+        const newComments = await ApiService.getNewCommentBatch({
+          allComments: allComments,
+          currentIndex: 0,
+          nextIndex: numOfCommentsToAdd,
+        });
+        if (newComments.length < numOfCommentsToAdd) {
+          setHasMore(false);
+        }
+        setComments(newComments);
+      } catch (error) {
+        alert(error);
+      }
+    })();
+  }, [allComments]);
 
   const handleMoreComments = async () => {
     setLoading(true);
@@ -38,7 +51,7 @@ const CommentSection = ({ initialComments, allComments }) => {
         currentIndex,
         nextIndex,
       });
-
+      
       if (
         newComments.length < numOfCommentsToAdd ||
         nextIndex >= allComments.length
@@ -53,22 +66,22 @@ const CommentSection = ({ initialComments, allComments }) => {
     }
     setLoading(false);
   };
-  
+
+  if (!comments || !allComments) {
+    return <></>
+  }
+
   return (
     <>
-      <CommentHeading>Comments</CommentHeading>
-      <HorizontalLine />
-      {comments
-        ? comments.map((comment, i) => <Comment key={i} data={comment.data} />)
-        : initialComments.map((comment, i) => (
-            <Comment key={i} data={comment.data} />
-          ))}
-      <HorizontalLine />
-      {loading ? (
+      {/* <CommentHeading>Comments</CommentHeading> */}
+      {/* <HorizontalLine /> */}
+      {comments.map((comment, i) => <Comment key={i} data={comment.data} indent={indent + 1} />)}
+      {/* <HorizontalLine /> */}
+      {/* {loading ? (
         <p>Loading comments...</p>
       ) : (
         hasMore && <Button onClick={handleMoreComments}>More</Button>
-      )}
+      )} */}
     </>
   );
 };

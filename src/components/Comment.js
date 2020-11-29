@@ -1,4 +1,5 @@
 import styled, { keyframes } from 'styled-components';
+import CommentSection from './CommentSection';
 
 const flash = keyframes`
   from {
@@ -13,13 +14,15 @@ const flash = keyframes`
 const CommentContainer = styled.div`
   font-size: 14px;
   //animation: ${flash} 1s ease;
+  padding-left: ${props => 8*props.indent}px;
+  background-color: ${props => props.indent === 1 ? 'black' : ''};
 `;
 
 const CommentAuthor = styled.p`
   color: rgb(218, 218, 218);
   font-weight: 700;
   margin: 0;
-  padding: 1em 0 4px 0;
+  padding: 4px 0;
 `;
 
 const CommentDescription = styled.div`
@@ -35,14 +38,18 @@ const CommentDescription = styled.div`
     text-overflow: ellipsis;
     overflow: hidden;
   }
+  border-left: 1px dotted red;
+  padding-left: 8px;
 `;
-
-const Comment = ({ data }) => {
+const Comment = ({ data, indent }) => {
   return(
-    <CommentContainer>
-      <CommentAuthor>by {data.by}</CommentAuthor>
-      <CommentDescription dangerouslySetInnerHTML={{ __html: data.text }} />
-    </CommentContainer>
+    <>
+      <CommentContainer indent={indent}>
+        <CommentAuthor>by {data.by}</CommentAuthor>
+        <CommentDescription dangerouslySetInnerHTML={{ __html: data.text }} />
+      </CommentContainer>
+      <CommentSection allComments={data.kids} indent={indent + 1}/>
+    </>
   )
 }
 

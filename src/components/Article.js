@@ -7,7 +7,7 @@ import CommentSection from './CommentSection';
 const MainContainer = styled.main`
   background-color: hsl(230, 17%, 14%);
   margin: 0 auto;
-  max-width: 1440px;
+  max-width: 60em;
   min-height: 100vh;
 `;
 
@@ -26,18 +26,11 @@ const Description = styled.div`
 
 const Article = ({ id }) => {
   const [article, setArticle] = useState();
-  const [initialComments, setInitialComments] = useState([]);
 
   useEffect(() => {
     (async () => {
       try {
         const response = await ApiService.getArticleFromId(id);
-        const newComments = await ApiService.getNewCommentBatch({
-          allComments: response.data.kids,
-          currentIndex: 0,
-          nextIndex: 25,
-        });
-        setInitialComments(newComments);
         setArticle(response.data);
       } catch (error) {
         alert(error);
@@ -61,10 +54,7 @@ const Article = ({ id }) => {
         <Description dangerouslySetInnerHTML={{ __html: article.text }} />
         {/* why do we want to paginate? */}
         {/* loading a batch of comments first VS loading independently in a comment component */}
-        <CommentSection
-          initialComments={initialComments}
-          allComments={article.kids}
-        />
+        <CommentSection allComments={article.kids} indent={0} />
       </ArticleContainer>
     </MainContainer>
   );
