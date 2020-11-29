@@ -1,28 +1,30 @@
+import { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import CommentSection from './CommentSection';
 
 const flash = keyframes`
   from {
-    background-color: #fff0d6;
+    opacity: 0.5;
   }
 
   to {
-    background-color: hsl(230, 17%, 14%);
+    opacity: 1;
   }
 `;
 
 const CommentContainer = styled.div`
   font-size: 14px;
-  //animation: ${flash} 1s ease;
-  padding-left: ${props => 8*props.indent}px;
-  background-color: ${props => props.indent === 1 ? 'black' : ''};
+  animation: ${flash} 0.3s ease-in;
+  margin-left: ${(props) => 8 + props.indent}px;
+  padding-left: 10px;
+  border-left: 1px dotted grey;
 `;
 
 const CommentAuthor = styled.p`
   color: rgb(218, 218, 218);
   font-weight: 700;
   margin: 0;
-  padding: 4px 0;
+  margin: 8px 0;
 `;
 
 const CommentDescription = styled.div`
@@ -30,7 +32,7 @@ const CommentDescription = styled.div`
     margin-top: 8px;
     margin-bottom: 0;
   }
-  
+
   a {
     max-width: 300px;
     display: block;
@@ -38,19 +40,43 @@ const CommentDescription = styled.div`
     text-overflow: ellipsis;
     overflow: hidden;
   }
-  border-left: 1px dotted red;
-  padding-left: 8px;
+`;
+
+const RepliesLink = styled.p`
+  color: wheat;
+  text-decoration: underline;
+  cursor: pointer;
+  margin: 0;
+  padding-top: 8px;
 `;
 const Comment = ({ data, indent }) => {
-  return(
+  const [viewReplies, setViewReplies] = useState(false);
+  const handleReplies = () => {
+    setViewReplies(true);
+  };
+  return (
     <>
       <CommentContainer indent={indent}>
         <CommentAuthor>by {data.by}</CommentAuthor>
         <CommentDescription dangerouslySetInnerHTML={{ __html: data.text }} />
+        {data.kids &&
+          (viewReplies ? (
+            <></>
+          ) : (
+            <RepliesLink onClick={handleReplies}>
+              replies ({data.kids.length})
+            </RepliesLink>
+          ))}
+        {viewReplies && (
+          <CommentSection
+            allComments={data.kids}
+            indent={indent + 1}
+            isReply={true}
+          />
+        )}
       </CommentContainer>
-      <CommentSection allComments={data.kids} indent={indent + 1}/>
     </>
-  )
-}
+  );
+};
 
 export default Comment;

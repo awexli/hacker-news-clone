@@ -54,7 +54,7 @@ const Article = ({ id }) => {
         <Description dangerouslySetInnerHTML={{ __html: article.text }} />
         {/* why do we want to paginate? */}
         {/* loading a batch of comments first VS loading independently in a comment component */}
-        <CommentSection allComments={article.kids} indent={0} />
+        <CommentSection allComments={article.kids} indent={0} isReply={false} />
       </ArticleContainer>
     </MainContainer>
   );
