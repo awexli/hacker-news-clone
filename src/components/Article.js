@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import ApiService from '../api-service';
 import styled from 'styled-components';
 
-import CommentSection from './CommentSection';
+import ApiService from '../api-service';
+import Comments from './comment/Comments';
+import { LoadingText } from './LoadingText';
 
 const MainContainer = styled.main`
   background-color: hsl(230, 17%, 14%);
@@ -18,10 +19,22 @@ const ArticleContainer = styled.article`
 const ArticleTitle = styled.h1`
   font-size: 1.5rem;
   margin-top: 0;
+  color: rgb(218, 218, 218);
 `;
 
 const Description = styled.div`
   font-size: 14px;
+`;
+
+const CommentHeading = styled.h2`
+  margin: 0;
+  color: rgb(218, 218, 218);
+`;
+
+const HorizontalLine = styled.hr`
+  height: 1px;
+  background-color: #d9dbdb;
+  border: none;
 `;
 
 const Article = ({ id }) => {
@@ -36,25 +49,22 @@ const Article = ({ id }) => {
         alert(error);
       }
     })();
-    // why do we pass the prop id into useEffect [id]?
-    // what happens if it's a different id?
-    // does useEffect need a dependency to re-render?
   }, [id]);
-
-  if (!article) {
-    // why do we want to show loading?
-    // any other ways to show a loading state?
-    return <div>Loading Article...</div>;
-  }
 
   return (
     <MainContainer>
       <ArticleContainer>
-        <ArticleTitle>{article.title}</ArticleTitle>
-        <Description dangerouslySetInnerHTML={{ __html: article.text }} />
-        {/* why do we want to paginate? */}
-        {/* loading a batch of comments first VS loading independently in a comment component */}
-        <CommentSection allComments={article.kids} indent={0} isReply={false} />
+        {!article ? (
+          <LoadingText />
+        ) : (
+          <>
+            <ArticleTitle>{article.title}</ArticleTitle>
+            <Description dangerouslySetInnerHTML={{ __html: article.text }} />
+            <CommentHeading>Comments</CommentHeading>
+            <HorizontalLine />
+            <Comments allComments={article.kids} indent={0} isReply={false} />
+          </>
+        )}
       </ArticleContainer>
     </MainContainer>
   );

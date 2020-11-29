@@ -1,21 +1,19 @@
 import styled from 'styled-components';
 
 export const Button = styled.button`
-  min-width: 80px;
-  height: 25px;
-  border: 1px solid #D9DBDB;
-  border-radius: 3px;
-  background: #FAFBFC;
-  font-weight: 600;
-  box-shadow: 0px 1px 3px rgba(0,0,0,0.15);
+  border: none;
+  background: transparent;
+  color: wheat;
+  font-size: 12px;
+  margin: 8px 0 0 0;
+  padding: 0;
 
   :hover {
     cursor: pointer;
-    background: #F2F3F4;
+    text-decoration: underline;
   }
 
   :focus {
     outline: none;
-    background: #EBECED;
   }
 `;
