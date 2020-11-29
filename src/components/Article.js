@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import CommentSection from './CommentSection';
 
 const MainContainer = styled.main`
-  background-color: #f7f7f7;
+  background-color: hsl(230, 17%, 14%);
   margin: 0 auto;
   max-width: 1440px;
   min-height: 100vh;
@@ -22,7 +22,6 @@ const ArticleTitle = styled.h1`
 
 const Description = styled.div`
   font-size: 14px;
-  max-width: 60em;
 `;
 
 const Article = ({ id }) => {
@@ -33,11 +32,11 @@ const Article = ({ id }) => {
     (async () => {
       try {
         const response = await ApiService.getArticleFromId(id);
-        const newCommentBatch = response.data.kids.slice(0, 25);
-        const newCommentsPromises = newCommentBatch.map((commentId) => {
-          return ApiService.getCommentFromId(commentId);
+        const newComments = await ApiService.getNewCommentBatch({
+          allComments: response.data.kids,
+          currentIndex: 0,
+          nextIndex: 25,
         });
-        const newComments = await Promise.all(newCommentsPromises);
         setInitialComments(newComments);
         setArticle(response.data);
       } catch (error) {
@@ -49,7 +48,7 @@ const Article = ({ id }) => {
     // does useEffect need a dependency to re-render?
   }, [id]);
 
-  if (!article || initialComments.length < 1) {
+  if (!article) {
     // why do we want to show loading?
     // any other ways to show a loading state?
     return <div>Loading Article...</div>;

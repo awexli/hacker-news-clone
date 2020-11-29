@@ -6,17 +6,17 @@ const flash = keyframes`
   }
 
   to {
-    transform: #f7f7f7;
+    background-color: hsl(230, 17%, 14%);
   }
 `;
 
 const CommentContainer = styled.div`
   font-size: 14px;
-  max-width: 60em;
-  animation: ${flash} 1s ease;
+  //animation: ${flash} 1s ease;
 `;
 
 const CommentAuthor = styled.p`
+  color: rgb(218, 218, 218);
   font-weight: 700;
   margin: 0;
   padding: 1em 0 4px 0;

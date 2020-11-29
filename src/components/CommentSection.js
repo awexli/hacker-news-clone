@@ -17,50 +17,57 @@ const HorizontalLine = styled.hr`
 
 const numOfCommentsToAdd = 25;
 const CommentSection = ({ initialComments, allComments }) => {
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState();
+  const [currentIndex, setCurrentIndex] = useState(numOfCommentsToAdd);
   const [loading, setLoading] = useState(false);
-  const [currentBoundary, setCurrentBoundary] = useState(numOfCommentsToAdd);
-  const [isMoreComments, setIsMoreComments] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+
+  useEffect(() => {
+    if (initialComments.length < numOfCommentsToAdd) {
+      setHasMore(false);
+    }
+    setComments(initialComments);
+  }, [initialComments]);
 
   const handleMoreComments = async () => {
     setLoading(true);
     try {
-      const nextBoundary = currentBoundary + numOfCommentsToAdd;
-      const newCommentBatch = allComments.slice(currentBoundary, nextBoundary);
-      const newCommentsPromises = newCommentBatch.map((commentId) => {
-        return ApiService.getCommentFromId(commentId);
+      const nextIndex = currentIndex + numOfCommentsToAdd;
+      const newComments = await ApiService.getNewCommentBatch({
+        allComments,
+        currentIndex,
+        nextIndex,
       });
-      const newComments = await Promise.all(newCommentsPromises);
-      setCurrentBoundary(nextBoundary);
-      setComments([...comments, ...newComments]);
-      if (newCommentBatch.length < numOfCommentsToAdd || nextBoundary >= allComments.length) {
-        setIsMoreComments(true);
+
+      if (
+        newComments.length < numOfCommentsToAdd ||
+        nextIndex >= allComments.length
+      ) {
+        setHasMore(false);
       }
+
+      setCurrentIndex(nextIndex);
+      setComments([...comments, ...newComments]);
     } catch (error) {
       alert(error);
     }
     setLoading(false);
   };
-
-  useEffect(() => {
-    if (initialComments.length < numOfCommentsToAdd) {
-      setIsMoreComments(true);
-    }
-    setComments(initialComments);
-  }, [initialComments]);
-
+  
   return (
     <>
       <CommentHeading>Comments</CommentHeading>
       <HorizontalLine />
-      {comments.map((comment, i) => {
-        return <Comment key={i} data={comment.data} />;
-      })}
+      {comments
+        ? comments.map((comment, i) => <Comment key={i} data={comment.data} />)
+        : initialComments.map((comment, i) => (
+            <Comment key={i} data={comment.data} />
+          ))}
       <HorizontalLine />
       {loading ? (
         <p>Loading comments...</p>
       ) : (
-        !isMoreComments && <Button onClick={handleMoreComments}>More</Button>
+        hasMore && <Button onClick={handleMoreComments}>More</Button>
       )}
     </>
   );
