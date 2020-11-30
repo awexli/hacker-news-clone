@@ -22,15 +22,15 @@ const CommentContainer = styled.div`
       return 8 + props.indent;
     }
   }}px;
-  padding-left: 10px;
-  border-left: 1px dotted grey;
+  padding-left: ${props => props.isReply && '10px'};
+  border-left: ${props => props.isReply && '1px dotted grey'};
 `;
 
 const ChildrenContainer = styled.div`
   display: ${(props) => (props.show ? 'block' : 'none')};
 `;
 
-const Comment = ({ data, indent }) => {
+const Comment = ({ data, indent, isReply }) => {
   const [hasViewedReplies, setHasViewedReplies] = useState(false);
   const [show, setShow] = useState(true);
 
@@ -45,7 +45,7 @@ const Comment = ({ data, indent }) => {
 
   return (
     <>
-      <CommentContainer indent={indent}>
+      <CommentContainer indent={indent} isReply={isReply}>
         {/* starting to pass in too many props */}
         <CommentContent
           data={data}

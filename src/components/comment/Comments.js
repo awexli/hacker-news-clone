@@ -76,6 +76,7 @@ const Comments = ({ allComments, indent, isReply }) => {
             key={i}
             data={comment.data}
             indent={indent + 1}
+            isReply={isReply}
           />
         ))}
       </CommentsContainer>
@@ -83,7 +84,7 @@ const Comments = ({ allComments, indent, isReply }) => {
         <LoadingText />
       ) : (
         hasMore && (
-          <Button onClick={handleMoreComments}>load more comments</Button>
+          <Button onClick={handleMoreComments} margin={'4px 0'}>load more comments</Button>
         )
       )}
     </>
