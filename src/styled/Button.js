@@ -5,7 +5,7 @@ export const Button = styled.button`
   background: transparent;
   color: wheat;
   font-size: 12px;
-  margin: 8px 0 0 0;
+  margin: ${props => props.margin || '0'};
   padding: 0;
 
   :hover {

@@ -25,18 +25,19 @@ const Comments = ({ allComments, indent, isReply }) => {
           currentIndex: 0,
           nextIndex: numOfCommentsToAdd,
         });
-        
+
         if (newCommentBatch.length < numOfCommentsToAdd) {
           setHasMore(false);
         }
-        
-        setCurrentIndex(numOfCommentsToAdd);  
+
+        setCurrentIndex(numOfCommentsToAdd);
         setComments(newCommentBatch);
       } catch (error) {
         alert(error);
       }
     })();
   }, [allComments]);
+  
 
   const handleMoreComments = async () => {
     setLoading(true);
@@ -71,7 +72,11 @@ const Comments = ({ allComments, indent, isReply }) => {
     <>
       <CommentsContainer>
         {comments.map((comment, i) => (
-          <Comment key={i} data={comment.data} indent={indent + 1} />
+          <Comment
+            key={i}
+            data={comment.data}
+            indent={indent + 1}
+          />
         ))}
       </CommentsContainer>
       {loading ? (

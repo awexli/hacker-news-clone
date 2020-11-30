@@ -62,6 +62,7 @@ const Article = ({ id }) => {
             <Description dangerouslySetInnerHTML={{ __html: article.text }} />
             <CommentHeading>Comments</CommentHeading>
             <HorizontalLine />
+            {/* Document recursion of comments */}
             <Comments allComments={article.kids} indent={0} isReply={false} />
           </>
         )}
