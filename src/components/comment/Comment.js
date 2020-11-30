@@ -17,13 +17,9 @@ const flash = keyframes`
 const CommentContainer = styled.div`
   font-size: 14px;
   animation: ${flash} 0.3s ease-in;
-  margin-left: ${(props) => {
-    if (props.indent !== 1) {
-      return 8 + props.indent;
-    }
-  }}px;
-  padding-left: ${props => props.isReply && '10px'};
-  border-left: ${props => props.isReply && '1px dotted grey'};
+  margin-left: ${(props) => props.indent !== 1 && 8 + props.indent}px;
+  padding-left: ${(props) => props.isReply && '10px'};
+  border-left: ${(props) => props.isReply && '1px dotted var(--color-grey)'};
 `;
 
 const ChildrenContainer = styled.div`

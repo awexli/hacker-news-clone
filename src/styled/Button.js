@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Button = styled.button`
   border: none;
   background: transparent;
-  color: wheat;
+  color: var(--color-wheat);
   font-size: 12px;
   margin: ${props => props.margin || '0'};
   padding: 0;

@@ -6,10 +6,11 @@ import Comments from './comment/Comments';
 import { LoadingText } from './LoadingText';
 
 const MainContainer = styled.main`
-  background-color: hsl(230, 17%, 14%);
+  background-color: var(--color-background-dark);
   margin: 0 auto;
   max-width: 60em;
   min-height: 100vh;
+  color: var(--color-text);
 `;
 
 const ArticleContainer = styled.article`
@@ -19,7 +20,7 @@ const ArticleContainer = styled.article`
 const ArticleTitle = styled.h1`
   font-size: 1.5rem;
   margin-top: 0;
-  color: rgb(218, 218, 218);
+  color: var(--color-off-white);
 `;
 
 const Description = styled.div`
@@ -28,12 +29,12 @@ const Description = styled.div`
 
 const CommentHeading = styled.h2`
   margin: 0;
-  color: rgb(218, 218, 218);
+  color: var(--color-off-white);
 `;
 
 const HorizontalLine = styled.hr`
   height: 1px;
-  background-color: #d9dbdb;
+  background-color: var(--color-grey);
   border: none;
 `;
 
@@ -44,6 +45,7 @@ const Article = ({ id }) => {
     (async () => {
       try {
         const response = await ApiService.getArticleFromId(id);
+        console.log(response.data);
         setArticle(response.data);
       } catch (error) {
         alert(error);

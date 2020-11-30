@@ -37,7 +37,6 @@ const Comments = ({ allComments, indent, isReply }) => {
       }
     })();
   }, [allComments]);
-  
 
   const handleMoreComments = async () => {
     setLoading(true);
@@ -84,7 +83,9 @@ const Comments = ({ allComments, indent, isReply }) => {
         <LoadingText />
       ) : (
         hasMore && (
-          <Button onClick={handleMoreComments} margin={'4px 0'}>load more comments</Button>
+          <Button onClick={handleMoreComments} margin={'4px 0'}>
+            load more comments
+          </Button>
         )
       )}
     </>

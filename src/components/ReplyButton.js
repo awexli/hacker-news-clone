@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Button } from '../styled/Button';
 
 const ReplyText = styled.span`
-  color: rgb(218, 218, 218);
+  color: var(--color-off-white);
   font-weight: 700;
   border-left: 1px dotted grey;
   padding-left: 10px;

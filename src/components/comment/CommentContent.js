@@ -4,32 +4,34 @@ import { Button } from '../../styled/Button';
 import { ReplyButton } from '../ReplyButton';
 
 const CommentContentContainer = styled.div`
-  margin: 0 0 10px 0;
+  margin-bottom: 8px;
 `;
 
 const CommentHeader = styled.div`
   display: flex;
   align-items: center;
-  margin: 0 0 4px 0;
+  height: 20px;
   font-style: ${(props) => !props.show && 'italic'};
 
   p {
-    color: ${(props) => !props.show && 'grey'};
+    color: ${(props) => !props.show && 'var(--color-grey);'};
   }
 `;
 
 const CommentAuthor = styled.p`
-  color: rgb(218, 218, 218);
+  color: var(--color-off-white);
   font-weight: 700;
   margin: 0;
 `;
 
 const PostedDate = styled.span`
+  color: var(--color-grey);
   margin-left: 8px;
-  color: #A6A6A6;
 `;
 
 const CommentDescription = styled.div`
+  line-height: 1.4;
+
   p {
     margin-top: 8px;
     margin-bottom: 0;
@@ -58,11 +60,11 @@ export const CommentContent = ({
   // https://www.geeksforgeeks.org/get-the-relative-timestamp-difference-between-dates-in-javascript/
   const getRelativeDate = () => {
     const min = 60 * 1000;
-    const hour = min * 60; 
-    const day = hour * 24; 
-    const week = day * 7; 
-    const month = day * 30; 
-    const year = day * 365; 
+    const hour = min * 60;
+    const day = hour * 24;
+    const week = day * 7;
+    const month = day * 30;
+    const year = day * 365;
     const currDate = Date.now(); // milliseconds in today's date
     const prevDate = data.time * 1000; // milliseconds in previous date
     const difference = currDate - prevDate;
