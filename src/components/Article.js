@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import ApiService from '../api-service';
 import Comments from './comment/Comments';
 import { LoadingText } from './LoadingText';
+import { getRelativeDate } from '../util';
 
 const MainContainer = styled.main`
   background-color: var(--color-background-dark);
@@ -17,13 +18,21 @@ const ArticleContainer = styled.article`
   padding: 1em 1em 10em 1em;
 `;
 
+const ArticleHeader = styled.div`
+  margin-bottom: 10px;
+`;
+
 const ArticleTitle = styled.h1`
   font-size: 1.5rem;
-  margin-top: 0;
+  margin: 0;
   color: var(--color-off-white);
 `;
 
-const Description = styled.div`
+const ArticleMeta = styled.div`
+  font-size: 12px;
+`;
+
+const ArticleDescription = styled.div`
   font-size: 14px;
 `;
 
@@ -60,8 +69,14 @@ const Article = ({ id }) => {
           <LoadingText />
         ) : (
           <>
-            <ArticleTitle>{article.title}</ArticleTitle>
-            <Description dangerouslySetInnerHTML={{ __html: article.text }} />
+            <ArticleHeader>
+              <ArticleTitle>{article.title}</ArticleTitle>
+              <ArticleMeta>
+                {article.score} points | by {article.by} |{' '}
+                {getRelativeDate(article.time)} | {article.descendants} comments
+              </ArticleMeta>
+            </ArticleHeader>
+            <ArticleDescription dangerouslySetInnerHTML={{ __html: article.text }} />
             <CommentHeading>Comments</CommentHeading>
             <HorizontalLine />
             {/* Document recursion of comments */}
