@@ -19,10 +19,18 @@ const CommentHeader = styled.div`
   }
 `;
 
-const CommentAuthor = styled.p`
+const CommentAuthor = styled.button`
   color: var(--color-off-white);
   font-weight: 700;
   margin: 0;
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  
+  :focus {
+    outline: none;
+  }
 `;
 
 const PostedDate = styled.span`
@@ -57,8 +65,8 @@ export const CommentContent = ({
   show,
   handleReplies,
   hasViewedReplies,
+  handleModal
 }) => {
-  
   return (
     <CommentContentContainer>
       <CommentHeader show={show}>
@@ -67,7 +75,7 @@ export const CommentContent = ({
             {show ? '[ - ]' : '[ + ]'}
           </Button>
         )}
-        <CommentAuthor>{data.deleted ? '[deleted]' : data.by}</CommentAuthor>
+        <CommentAuthor onClick={() => handleModal(data.by)}>{data.deleted ? '[deleted]' : data.by}</CommentAuthor>
         <PostedDate>{getRelativeDate(data.time)}</PostedDate>
       </CommentHeader>
       {show && (

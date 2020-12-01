@@ -5,6 +5,10 @@ export default class ApiService {
     return `https://hacker-news.firebaseio.com/v0/item/${id}.json`;
   }
 
+  static UserApi(id) {
+    return `https://hacker-news.firebaseio.com/v0/user/${id}.json`
+  }
+
   static getArticleFromId(id) {
     return axios.get(ApiService.HackerNewsApi(id));
   }
@@ -20,5 +24,9 @@ export default class ApiService {
       ApiService.getCommentFromId(id)
     );
     return Promise.all(newCommentsPromise);
+  }
+
+  static getUserFromId(id) {
+    return axios.get(ApiService.UserApi(id));
   }
 }

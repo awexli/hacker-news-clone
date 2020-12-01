@@ -10,7 +10,7 @@ const CommentsContainer = styled.div``;
 
 const numOfCommentsToAdd = 25;
 
-const Comments = ({ allComments, indent, isReply }) => {
+const Comments = ({ allComments, indent, isReply, handleModal }) => {
   const [comments, setComments] = useState();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -76,6 +76,7 @@ const Comments = ({ allComments, indent, isReply }) => {
             data={comment.data}
             indent={indent + 1}
             isReply={isReply}
+            handleModal={handleModal}
           />
         ))}
       </CommentsContainer>

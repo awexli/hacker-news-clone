@@ -26,7 +26,7 @@ const ChildrenContainer = styled.div`
   display: ${(props) => (props.show ? 'block' : 'none')};
 `;
 
-const Comment = ({ data, indent, isReply }) => {
+const Comment = ({ data, indent, isReply, handleModal }) => {
   const [hasViewedReplies, setHasViewedReplies] = useState(false);
   const [show, setShow] = useState(true);
 
@@ -49,6 +49,7 @@ const Comment = ({ data, indent, isReply }) => {
           show={show}
           handleReplies={handleReplies}
           hasViewedReplies={hasViewedReplies}
+          handleModal={handleModal} 
         />
         {/* document why we want show being passed in as a prop to display block/none */}
         <ChildrenContainer show={show}>
@@ -57,6 +58,7 @@ const Comment = ({ data, indent, isReply }) => {
               allComments={data.kids}
               indent={indent + 1}
               isReply={true}
+              handleModal={handleModal}
             />
           )}
         </ChildrenContainer>

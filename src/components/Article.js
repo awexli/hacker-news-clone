@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import ApiService from '../api-service';
 import Comments from './comment/Comments';
 import { LoadingText } from './LoadingText';
+import { Modal } from './Modal';
 import { getRelativeDate } from '../util';
 
 const MainContainer = styled.main`
@@ -49,18 +50,38 @@ const HorizontalLine = styled.hr`
 
 const Article = ({ id }) => {
   const [article, setArticle] = useState();
+  const [showModal, setShowModal] = useState(false);
+  const [userId, setUserId] = useState();
 
   useEffect(() => {
     (async () => {
       try {
         const response = await ApiService.getArticleFromId(id);
-        console.log(response.data);
         setArticle(response.data);
       } catch (error) {
         alert(error);
       }
     })();
-  }, [id]);
+
+    window.onclick = (event) => {
+      if (event.target.id === 'modal') {
+        setShowModal(!showModal);
+      }
+    }
+
+    return () => {
+      window.onclick = (event) => {
+        if (event.target.id === 'modal') {
+          setShowModal(!showModal);
+        }
+      }
+    }
+  }, [showModal, id]);
+
+  const handleModal = (userId) => {
+    setShowModal(!showModal);
+    setUserId(userId);
+  };
 
   return (
     <MainContainer>
@@ -76,14 +97,22 @@ const Article = ({ id }) => {
                 {getRelativeDate(article.time)} | {article.descendants} comments
               </ArticleMeta>
             </ArticleHeader>
-            <ArticleDescription dangerouslySetInnerHTML={{ __html: article.text }} />
-            <CommentHeading>Comments</CommentHeading>
+            <ArticleDescription
+              dangerouslySetInnerHTML={{ __html: article.text }}
+            />
+            <CommentHeading onClick={handleModal}>Comments</CommentHeading>
             <HorizontalLine />
             {/* Document recursion of comments */}
-            <Comments allComments={article.kids} indent={0} isReply={false} />
+            <Comments
+              allComments={article.kids}
+              indent={0}
+              isReply={false}
+              handleModal={handleModal} 
+            />
           </>
         )}
       </ArticleContainer>
+      <Modal userId={userId} handleModal={handleModal} show={showModal} />
     </MainContainer>
   );
 };
