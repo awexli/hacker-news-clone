@@ -3,11 +3,21 @@ import styled, { keyframes } from 'styled-components';
 
 import ApiService from '../api-service';
 
+const animateBackground = keyframes`
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+`;
+
 const ModalContainer = styled.div`
   display: block; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+  padding-top: 10px; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -15,6 +25,8 @@ const ModalContainer = styled.div`
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0, 0, 0); /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  animation-name: ${animateBackground};
+  animation-duration: .5s;
 `;
 
 const animationTop = keyframes`
@@ -31,15 +43,33 @@ const animationTop = keyframes`
 
 const ModalContent = styled.div`
   position: relative;
-  background-color: var(--color-background-dark);
   margin: auto;
   padding: 0;
+  
   width: 300px;
+  min-height: 170px;
+  max-height: 98%;
+  overflow: auto;
+
+  background-color: var(--color-background-dark);
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  animation-name: ${animationTop};
-  animation-duration: 0.4s;
   border-radius: 10px;
   word-wrap: break-word;
+
+  animation-name: ${animationTop};
+  animation-duration: 0.5s;
+
+  @media (min-width: 411px) {
+    width: 360px;
+  }
+
+  @media (min-width: 768px) {
+    width: 560px;
+  }
+
+  @media (min-width: 1024px) {
+    width: 460px;
+  }
 `;
 
 const ModalHeader = styled.div`
@@ -111,10 +141,6 @@ export const Modal = ({ userId, show, handleModal }) => {
     })();
   }, [show, userId]);
 
-  if (show && !user) {
-    return <p>loading...</p>;
-  }
-
   return (
     <>
       {show && (
@@ -126,7 +152,7 @@ export const Modal = ({ userId, show, handleModal }) => {
             <ModalBody>
               <UserList>
                 {loading ? (
-                  <p>loading...</p>
+                    <p>Loading user...</p>
                 ) : (
                   <>
                     <li>user: {user.id}</li>
