@@ -107,14 +107,9 @@ const ModalBody = styled.div`
 const UserList = styled.ul`
   list-style: none;
 `;
-// const ModalFooter = styled.div`
-//   padding: 2px 16px;
-//   background-color: var(--color-background-dark);
-//   color: white;
-// `;
 
 export const Modal = ({ userId, show, handleModal }) => {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({});
   const [userCreated, setUserCreated] = useState();
   const [loading, setLoading] = useState(false);
 
@@ -166,7 +161,6 @@ export const Modal = ({ userId, show, handleModal }) => {
                         />
                       </li>
                     )}
-                    <a href="#">submissions</a>
                   </>
                 )}
               </UserList>
