@@ -67,6 +67,9 @@ export const CommentContent = ({
   hasViewedReplies,
   handleModal
 }) => {
+  const handleAuthorClick = (author) => {
+    handleModal(author);
+  }
   return (
     <CommentContentContainer>
       <CommentHeader show={show}>
@@ -75,7 +78,7 @@ export const CommentContent = ({
             {show ? '[ - ]' : '[ + ]'}
           </Button>
         )}
-        <CommentAuthor onClick={() => handleModal(data.by)}>{data.deleted ? '[deleted]' : data.by}</CommentAuthor>
+        <CommentAuthor onClick={() => handleAuthorClick(data.by)}>{data.deleted ? '[deleted]' : data.by}</CommentAuthor>
         <PostedDate>{getRelativeDate(data.time)}</PostedDate>
       </CommentHeader>
       {show && (

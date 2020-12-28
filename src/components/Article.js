@@ -65,21 +65,13 @@ const Article = ({ id }) => {
 
     window.onclick = (event) => {
       if (event.target.id === 'modal') {
-        setShowModal(!showModal);
+        setShowModal(false);
       }
     }
-
-    return () => {
-      window.onclick = (event) => {
-        if (event.target.id === 'modal') {
-          setShowModal(!showModal);
-        }
-      }
-    }
-  }, [showModal, id]);
+  }, [id]);
 
   const handleModal = (userId) => {
-    setShowModal(!showModal);
+    setShowModal(true);
     setUserId(userId);
   };
 
@@ -100,7 +92,7 @@ const Article = ({ id }) => {
             <ArticleDescription
               dangerouslySetInnerHTML={{ __html: article.text }}
             />
-            <CommentHeading onClick={handleModal}>Comments</CommentHeading>
+            <CommentHeading>Comments</CommentHeading>
             <HorizontalLine />
             {/* Document recursion of comments */}
             <Comments
