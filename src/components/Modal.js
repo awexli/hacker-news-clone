@@ -17,7 +17,7 @@ const ModalContainer = styled.div`
   display: block; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
-  padding-top: 10px; /* Location of the box */
+  padding-top: 50px; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */

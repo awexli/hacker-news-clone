@@ -99,7 +99,8 @@ const Article = ({ id }) => {
               allComments={article.kids}
               indent={0}
               isReply={false}
-              handleModal={handleModal} 
+              handleModal={handleModal}
+              levelsToRecurse={1}
             />
           </>
         )}

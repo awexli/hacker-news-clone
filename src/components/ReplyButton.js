@@ -9,18 +9,12 @@ const ReplyText = styled.span`
   padding-left: 10px;
 `;
 
-export const ReplyButton = ({
-  handleReplies,
-  hasViewedReplies,
-  numOfReplies,
-}) => {
+export const ReplyButton = ({ handleReplies, hasViewedReplies }) => {
   return (
     <>
       {!hasViewedReplies && (
         <Button onClick={handleReplies} margin={'8px 0 0 0'}>
-          <ReplyText>
-            {numOfReplies} more {numOfReplies > 1 ? 'replies' : 'reply'}
-          </ReplyText>
+          <ReplyText>view reply(s)</ReplyText>
         </Button>
       )}
     </>

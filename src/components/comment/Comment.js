@@ -26,7 +26,7 @@ const ChildrenContainer = styled.div`
   display: ${(props) => (props.show ? 'block' : 'none')};
 `;
 
-const Comment = ({ data, indent, isReply, handleModal }) => {
+const Comment = ({ data, indent, isReply, handleModal, levelsToRecurse }) => {
   const [hasViewedReplies, setHasViewedReplies] = useState(false);
   const [show, setShow] = useState(true);
 
@@ -39,8 +39,8 @@ const Comment = ({ data, indent, isReply, handleModal }) => {
     setShow(!show);
   };
 
-  return (
-    <>
+  if (levelsToRecurse > 0) {
+    return (
       <CommentContainer indent={indent} isReply={isReply}>
         {/* starting to pass in too many props */}
         <CommentContent
@@ -49,21 +49,50 @@ const Comment = ({ data, indent, isReply, handleModal }) => {
           show={show}
           handleReplies={handleReplies}
           hasViewedReplies={hasViewedReplies}
-          handleModal={handleModal} 
+          handleModal={handleModal}
+          levelViewed={levelsToRecurse}
         />
         {/* document why we want show being passed in as a prop to display block/none */}
         <ChildrenContainer show={show}>
-          {hasViewedReplies && (
+          {data.kids && (
             <Comments
               allComments={data.kids}
               indent={indent + 1}
               isReply={true}
               handleModal={handleModal}
+              levelsToRecurse={levelsToRecurse - 1}
             />
           )}
         </ChildrenContainer>
       </CommentContainer>
-    </>
+    );
+  }
+
+  return (
+    <CommentContainer indent={indent} isReply={isReply}>
+      {/* starting to pass in too many props */}
+      <CommentContent
+        data={data}
+        toggleCollapse={toggleCollapse}
+        show={show}
+        handleReplies={handleReplies}
+        hasViewedReplies={hasViewedReplies}
+        handleModal={handleModal}
+        levelViewed={levelsToRecurse}
+      />
+      {/* document why we want show being passed in as a prop to display block/none */}
+      <ChildrenContainer show={show}>
+        {hasViewedReplies && (
+          <Comments
+            allComments={data.kids}
+            indent={indent + 1}
+            isReply={true}
+            handleModal={handleModal}
+            levelsToRecurse={1}
+          />
+        )}
+      </ChildrenContainer>
+    </CommentContainer>
   );
 };
 

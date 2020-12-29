@@ -5,7 +5,8 @@ import { ReplyButton } from '../ReplyButton';
 import { getRelativeDate } from '../../util';
 
 const CommentContentContainer = styled.div`
-  margin-bottom: 8px;
+  margin: 1px 0;
+  padding: 8px;
 `;
 
 const CommentHeader = styled.div`
@@ -27,7 +28,7 @@ const CommentAuthor = styled.button`
   cursor: pointer;
   background: transparent;
   border: none;
-  
+
   :focus {
     outline: none;
   }
@@ -39,7 +40,7 @@ const PostedDate = styled.span`
 `;
 
 const CommentDescription = styled.div`
-  line-height: 1.4;
+  line-height: 1.5;
 
   p {
     margin-top: 8px;
@@ -65,11 +66,12 @@ export const CommentContent = ({
   show,
   handleReplies,
   hasViewedReplies,
-  handleModal
+  handleModal,
+  levelViewed,
 }) => {
   const handleAuthorClick = (author) => {
     handleModal(author);
-  }
+  };
   return (
     <CommentContentContainer>
       <CommentHeader show={show}>
@@ -78,7 +80,9 @@ export const CommentContent = ({
             {show ? '[ - ]' : '[ + ]'}
           </Button>
         )}
-        <CommentAuthor onClick={() => handleAuthorClick(data.by)}>{data.deleted ? '[deleted]' : data.by}</CommentAuthor>
+        <CommentAuthor onClick={() => handleAuthorClick(data.by)}>
+          {data.deleted ? '[deleted]' : data.by}
+        </CommentAuthor>
         <PostedDate>{getRelativeDate(data.time)}</PostedDate>
       </CommentHeader>
       {show && (
@@ -86,14 +90,15 @@ export const CommentContent = ({
           dangerouslySetInnerHTML={{ __html: !data.deleted ? data.text : null }}
         />
       )}
-      {data.kids && (
+      {data.kids && !levelViewed ? (
         <ReplyWrapper show={show}>
           <ReplyButton
             handleReplies={handleReplies}
             hasViewedReplies={hasViewedReplies}
-            numOfReplies={data.kids.length}
           />
         </ReplyWrapper>
+      ) : (
+        <></>
       )}
     </CommentContentContainer>
   );

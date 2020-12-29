@@ -10,7 +10,7 @@ const CommentsContainer = styled.div``;
 
 const numOfCommentsToAdd = 25;
 
-const Comments = ({ allComments, indent, isReply, handleModal }) => {
+const Comments = ({ allComments, indent, isReply, handleModal, levelsToRecurse }) => {
   const [comments, setComments] = useState();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -77,6 +77,7 @@ const Comments = ({ allComments, indent, isReply, handleModal }) => {
             indent={indent + 1}
             isReply={isReply}
             handleModal={handleModal}
+            levelsToRecurse={levelsToRecurse}
           />
         ))}
       </CommentsContainer>
