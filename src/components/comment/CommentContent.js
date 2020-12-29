@@ -40,7 +40,7 @@ const PostedDate = styled.span`
 `;
 
 const CommentDescription = styled.div`
-  line-height: 1.5;
+  line-height: 1.4;
 
   p {
     margin-top: 8px;

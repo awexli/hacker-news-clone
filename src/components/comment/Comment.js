@@ -15,11 +15,15 @@ const flash = keyframes`
 `;
 
 const CommentContainer = styled.div`
-  font-size: 14px;
+  font-size: 16px;
   animation: ${flash} 0.3s ease-in;
   margin-left: ${(props) => props.indent !== 1 && 8 + props.indent}px;
   padding-left: ${(props) => props.isReply && '10px'};
   border-left: ${(props) => props.isReply && '1px dotted var(--color-grey)'};
+
+  @media (max-width: 767px) {
+    font-size: 14px;
+  }
 `;
 
 const ChildrenContainer = styled.div`

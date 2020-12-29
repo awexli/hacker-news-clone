@@ -30,11 +30,19 @@ const ArticleTitle = styled.h1`
 `;
 
 const ArticleMeta = styled.div`
-  font-size: 12px;
+  font-size: 14px;
+
+  @media (max-width: 767px) {
+    font-size: 12px;
+  }
 `;
 
 const ArticleDescription = styled.div`
-  font-size: 14px;
+  font-size: 16px;
+  
+  @media (max-width: 767px) {
+    font-size: 14px;
+  }
 `;
 
 const CommentHeading = styled.h2`
@@ -67,7 +75,7 @@ const Article = ({ id }) => {
       if (event.target.id === 'modal') {
         setShowModal(false);
       }
-    }
+    };
   }, [id]);
 
   const handleModal = (userId) => {
@@ -100,7 +108,7 @@ const Article = ({ id }) => {
               indent={0}
               isReply={false}
               handleModal={handleModal}
-              levelsToRecurse={1}
+              levelsToRecurse={0}
             />
           </>
         )}

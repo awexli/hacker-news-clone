@@ -5,7 +5,7 @@ import Article from './components/Article';
 const GlobalStyles = createGlobalStyle`
   html {
     --color-text: hsl(228, 61%, 78%);
-    --color-background-dark: hsl(230, 17%, 14%); 
+    --color-background-dark: #282c34; 
     --color-background-less-dark: hsl(232, 19%, 15%);
     
     --color-off-white: rgb(218, 218, 218);
