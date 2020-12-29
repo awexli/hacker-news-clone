@@ -79,7 +79,7 @@ const Article = ({ id }) => {
   }, [id]);
 
   const handleModal = (userId) => {
-    setShowModal(true);
+    setShowModal(!showModal);
     setUserId(userId);
   };
 
