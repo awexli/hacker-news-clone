@@ -6,7 +6,7 @@ export default class ApiService {
   }
 
   static UserApi(id) {
-    return `https://hacker-news.firebaseio.com/v0/user/${id}.json`
+    return `https://hacker-news.firebaseio.com/v0/user/${id}.json`;
   }
 
   static getArticleFromId(id) {
@@ -23,7 +23,36 @@ export default class ApiService {
     const newCommentsPromise = newCommentBatch.map((id) =>
       ApiService.getCommentFromId(id)
     );
+
     return Promise.all(newCommentsPromise);
+  }
+
+  static getCommentReplies(kids) {
+    const commentRepliesPromise = kids.map((id) =>
+      ApiService.getCommentFromId(id)
+    );
+
+    return Promise.all(commentRepliesPromise);
+  }
+
+  // TODO: add ability to recurse specified amount of levels
+  static async getComments(req) {
+    try {
+      const comments = await ApiService.getNewCommentBatch(req);
+
+      for (const comment of comments) {
+        const kids = comment.data.kids;
+        if (kids) {
+          comment.data.kids = await ApiService.getCommentReplies(kids);
+        }
+      }
+
+      return comments;
+    } catch (error) {
+      console.log('getComments error - ' + error);
+    }
+
+    return [];
   }
 
   static getUserFromId(id) {

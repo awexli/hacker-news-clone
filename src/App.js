@@ -23,7 +23,7 @@ function App() {
   return (
     <div className="App">
       <GlobalStyles />
-      <Article id={'25007697'}></Article>
+      <Article id={'25700135'}></Article>
     </div>
   );
 }

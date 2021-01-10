@@ -8,58 +8,61 @@ import { LoadingText } from '../LoadingText';
 
 const CommentsContainer = styled.div``;
 
-const numOfCommentsToAdd = 25;
+const numOfCommentsToAdd = 10;
 
-const Comments = ({ allComments, indent, isReply, handleModal, levelsToRecurse }) => {
-  const [comments, setComments] = useState();
+const Comments = ({
+  allComments,
+  indent,
+  isReply,
+  handleModal,
+  levelsToRecurse,
+}) => {
+  const [comments, setComments] = useState(
+    levelsToRecurse < 1 ? allComments : undefined
+  );
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
+  const [hasMore, setHasMore] = useState(levelsToRecurse < 1 ? false : true);
 
   useEffect(() => {
+    if (!allComments) return;
+
+    if (levelsToRecurse < 1) return;
+
     (async () => {
-      if (!allComments) return;
-      try {
-        const newCommentBatch = await ApiService.getNewCommentBatch({
-          allComments: allComments,
-          currentIndex: 0,
-          nextIndex: numOfCommentsToAdd,
-        });
-
-        if (newCommentBatch.length < numOfCommentsToAdd) {
-          setHasMore(false);
-        }
-
-        setCurrentIndex(numOfCommentsToAdd);
-        setComments(newCommentBatch);
-      } catch (error) {
-        alert(error);
-      }
-    })();
-  }, [allComments]);
-
-  const handleMoreComments = async () => {
-    setLoading(true);
-    try {
-      const nextIndex = currentIndex + numOfCommentsToAdd;
-      const newComments = await ApiService.getNewCommentBatch({
-        allComments,
-        currentIndex,
-        nextIndex,
+      const comments = await ApiService.getComments({
+        allComments: allComments,
+        currentIndex: 0,
+        nextIndex: numOfCommentsToAdd,
       });
 
-      if (
-        newComments.length < numOfCommentsToAdd ||
-        nextIndex >= allComments.length
-      ) {
+      if (comments.length < numOfCommentsToAdd) {
         setHasMore(false);
       }
 
-      setCurrentIndex(nextIndex);
-      setComments([...comments, ...newComments]);
-    } catch (error) {
-      alert(error);
+      setCurrentIndex(numOfCommentsToAdd);
+      setComments(comments);
+    })();
+  }, [allComments, levelsToRecurse]);
+
+  const handleMoreComments = async () => {
+    setLoading(true);
+    const nextIndex = currentIndex + numOfCommentsToAdd;
+    const newComments = await ApiService.getComments({
+      allComments,
+      currentIndex,
+      nextIndex,
+    });
+
+    if (
+      newComments.length < numOfCommentsToAdd ||
+      nextIndex >= allComments.length
+    ) {
+      setHasMore(false);
     }
+
+    setCurrentIndex(nextIndex);
+    setComments([...comments, ...newComments]);
     setLoading(false);
   };
 

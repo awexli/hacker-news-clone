@@ -15,7 +15,7 @@ export const getRelativeDate = (time) => {
     } else if (difference < hour) {
       return Math.round(difference / min) + ' minutes ago';
     } else if (difference < day) {
-      return difference / hour + ' hours ago';
+      return Math.round(difference / hour) + ' hours ago';
     } else if (difference < week) {
       return Math.round(difference / day) + ' days ago';
     } else if (difference < month) {

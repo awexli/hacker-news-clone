@@ -108,7 +108,7 @@ const Article = ({ id }) => {
               indent={0}
               isReply={false}
               handleModal={handleModal}
-              levelsToRecurse={0}
+              levelsToRecurse={1}
             />
           </>
         )}

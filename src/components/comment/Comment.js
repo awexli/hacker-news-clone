@@ -46,7 +46,6 @@ const Comment = ({ data, indent, isReply, handleModal, levelsToRecurse }) => {
   if (levelsToRecurse > 0) {
     return (
       <CommentContainer indent={indent} isReply={isReply}>
-        {/* starting to pass in too many props */}
         <CommentContent
           data={data}
           toggleCollapse={toggleCollapse}
@@ -56,7 +55,6 @@ const Comment = ({ data, indent, isReply, handleModal, levelsToRecurse }) => {
           handleModal={handleModal}
           levelViewed={levelsToRecurse}
         />
-        {/* document why we want show being passed in as a prop to display block/none */}
         <ChildrenContainer show={show}>
           {data.kids && (
             <Comments
