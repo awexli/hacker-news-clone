@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import ApiService from '../api-service';
+import { Button } from '../styled/Button';
+import { getRelativeDate } from '../util';
+
 import Comments from './comment/Comments';
 import { LoadingText } from './LoadingText';
 import { Modal } from './Modal';
-import { getRelativeDate } from '../util';
 
 const MainContainer = styled.main`
   background-color: var(--color-background-dark);
@@ -39,7 +41,7 @@ const ArticleMeta = styled.div`
 
 const ArticleDescription = styled.div`
   font-size: 16px;
-  
+
   @media (max-width: 767px) {
     font-size: 14px;
   }
@@ -93,8 +95,8 @@ const Article = ({ id }) => {
             <ArticleHeader>
               <ArticleTitle>{article.title}</ArticleTitle>
               <ArticleMeta>
-                {article.score} points | by {article.by} |{' '}
-                {getRelativeDate(article.time)} | {article.descendants} comments
+                {article.score} points | by{' '}
+                <Button isAuthor onClick={() => handleModal(article.by)}>{article.by}</Button> | {getRelativeDate(article.time)} | {article.descendants} comments
               </ArticleMeta>
             </ArticleHeader>
             <ArticleDescription
