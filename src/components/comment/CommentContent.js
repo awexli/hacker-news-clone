@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import { Button } from '../../styled/Button';
+import { UserModal } from '../user-modal';
 import { ReplyButton } from '../ReplyButton';
 import { getRelativeDate } from '../../util';
 
@@ -52,12 +53,8 @@ export const CommentContent = ({
   show,
   handleReplies,
   hasViewedReplies,
-  handleModal,
   levelViewed,
 }) => {
-  const handleAuthorClick = (author) => {
-    handleModal(author);
-  };
   return (
     <CommentContentContainer>
       <CommentHeader show={show}>
@@ -66,9 +63,7 @@ export const CommentContent = ({
             {show ? '[ - ]' : '[ + ]'}
           </Button>
         )}
-        <Button isAuthor onClick={() => handleAuthorClick(data.by)}>
-          {data.deleted ? '[deleted]' : data.by}
-        </Button>
+        <UserModal data={data} />
         <PostedDate>{getRelativeDate(data.time)}</PostedDate>
       </CommentHeader>
       {show && (
@@ -76,15 +71,10 @@ export const CommentContent = ({
           dangerouslySetInnerHTML={{ __html: !data.deleted ? data.text : null }}
         />
       )}
-      {data.kids && !levelViewed ? (
+      {data.kids && !levelViewed && (
         <ReplyWrapper show={show}>
-          <ReplyButton
-            handleReplies={handleReplies}
-            hasViewedReplies={hasViewedReplies}
-          />
+          <ReplyButton handleReplies={handleReplies} hasViewedReplies={hasViewedReplies} />
         </ReplyWrapper>
-      ) : (
-        <></>
       )}
     </CommentContentContainer>
   );

@@ -14,7 +14,6 @@ const Comments = ({
   allComments,
   indent,
   isReply,
-  handleModal,
   levelsToRecurse,
 }) => {
   const [comments, setComments] = useState(
@@ -79,7 +78,6 @@ const Comments = ({
             data={comment.data}
             indent={indent + 1}
             isReply={isReply}
-            handleModal={handleModal}
             levelsToRecurse={levelsToRecurse}
           />
         ))}

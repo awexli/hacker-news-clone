@@ -30,7 +30,7 @@ const ChildrenContainer = styled.div`
   display: ${(props) => (props.show ? 'block' : 'none')};
 `;
 
-const Comment = ({ data, indent, isReply, handleModal, levelsToRecurse }) => {
+const Comment = ({ data, indent, isReply, levelsToRecurse }) => {
   const [hasViewedReplies, setHasViewedReplies] = useState(false);
   const [show, setShow] = useState(true);
 
@@ -52,7 +52,6 @@ const Comment = ({ data, indent, isReply, handleModal, levelsToRecurse }) => {
           show={show}
           handleReplies={handleReplies}
           hasViewedReplies={hasViewedReplies}
-          handleModal={handleModal}
           levelViewed={levelsToRecurse}
         />
         <ChildrenContainer show={show}>
@@ -61,7 +60,6 @@ const Comment = ({ data, indent, isReply, handleModal, levelsToRecurse }) => {
               allComments={data.kids}
               indent={indent + 1}
               isReply={true}
-              handleModal={handleModal}
               levelsToRecurse={levelsToRecurse - 1}
             />
           )}
@@ -79,7 +77,6 @@ const Comment = ({ data, indent, isReply, handleModal, levelsToRecurse }) => {
         show={show}
         handleReplies={handleReplies}
         hasViewedReplies={hasViewedReplies}
-        handleModal={handleModal}
         levelViewed={levelsToRecurse}
       />
       {/* document why we want show being passed in as a prop to display block/none */}
@@ -89,7 +86,6 @@ const Comment = ({ data, indent, isReply, handleModal, levelsToRecurse }) => {
             allComments={data.kids}
             indent={indent + 1}
             isReply={true}
-            handleModal={handleModal}
             levelsToRecurse={1}
           />
         )}
