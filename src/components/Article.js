@@ -2,12 +2,11 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import ApiService from '../api-service';
-import { Button } from '../styled/Button';
 import { getRelativeDate } from '../util';
 
 import Comments from './comment/Comments';
 import { LoadingText } from './LoadingText';
-import { Modal } from './Modal';
+import { UserModal } from './user-modal';
 
 const MainContainer = styled.main`
   background-color: var(--color-background-dark);
@@ -60,8 +59,6 @@ const HorizontalLine = styled.hr`
 
 const Article = ({ id }) => {
   const [article, setArticle] = useState();
-  const [showModal, setShowModal] = useState(false);
-  const [userId, setUserId] = useState();
 
   useEffect(() => {
     (async () => {
@@ -72,18 +69,7 @@ const Article = ({ id }) => {
         alert(error);
       }
     })();
-
-    window.onclick = (event) => {
-      if (event.target.id === 'modal') {
-        setShowModal(false);
-      }
-    };
   }, [id]);
-
-  const handleModal = (userId) => {
-    setShowModal(!showModal);
-    setUserId(userId);
-  };
 
   return (
     <MainContainer>
@@ -96,7 +82,7 @@ const Article = ({ id }) => {
               <ArticleTitle>{article.title}</ArticleTitle>
               <ArticleMeta>
                 {article.score} points | by{' '}
-                <Button isAuthor onClick={() => handleModal(article.by)}>{article.by}</Button> | {getRelativeDate(article.time)} | {article.descendants} comments
+                <UserModal data={article} /> | {getRelativeDate(article.time)} | {article.descendants} comments
               </ArticleMeta>
             </ArticleHeader>
             <ArticleDescription
@@ -109,13 +95,11 @@ const Article = ({ id }) => {
               allComments={article.kids}
               indent={0}
               isReply={false}
-              handleModal={handleModal}
               levelsToRecurse={1}
             />
           </>
         )}
       </ArticleContainer>
-      <Modal userId={userId} handleModal={handleModal} show={showModal} />
     </MainContainer>
   );
 };
