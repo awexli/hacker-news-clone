@@ -1,26 +1,18 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import ApiService from '../api-service';
-import { getRelativeDate } from '../util';
-
-import Comments from './comment/Comments';
-import { LoadingText } from './LoadingText';
+import Comments from './comments';
+import { LoadingText } from './loading-text';
 import { UserModal } from './user-modal';
 
-const MainContainer = styled.main`
-  background-color: var(--color-background-dark);
-  margin: 0 auto;
-  max-width: 60em;
-  min-height: 100vh;
-  color: var(--color-text);
-`;
+import ApiService from '../api-service';
+import { getRelativeDate } from '../util';
 
 const ArticleContainer = styled.article`
   padding: 1em 1em 10em 1em;
 `;
 
-const ArticleHeader = styled.div`
+const ArticleHeading = styled.div`
   margin-bottom: 10px;
 `;
 
@@ -71,36 +63,24 @@ const Article = ({ id }) => {
     })();
   }, [id]);
 
+  if (!article) {
+    return <LoadingText />;
+  }
+
   return (
-    <MainContainer>
-      <ArticleContainer>
-        {!article ? (
-          <LoadingText />
-        ) : (
-          <>
-            <ArticleHeader>
-              <ArticleTitle>{article.title}</ArticleTitle>
-              <ArticleMeta>
-                {article.score} points | by{' '}
-                <UserModal data={article} /> | {getRelativeDate(article.time)} | {article.descendants} comments
-              </ArticleMeta>
-            </ArticleHeader>
-            <ArticleDescription
-              dangerouslySetInnerHTML={{ __html: article.text }}
-            />
-            <CommentHeading>Comments</CommentHeading>
-            <HorizontalLine />
-            {/* Document recursion of comments */}
-            <Comments
-              allComments={article.kids}
-              indent={0}
-              isReply={false}
-              levelsToRecurse={1}
-            />
-          </>
-        )}
-      </ArticleContainer>
-    </MainContainer>
+    <ArticleContainer>
+      <ArticleHeading>
+        <ArticleTitle>{article.title}</ArticleTitle>
+        <ArticleMeta>
+          {article.score} points | by <UserModal data={article} /> | {getRelativeDate(article.time)} |{' '}
+          {article.descendants} comments
+        </ArticleMeta>
+      </ArticleHeading>
+      <ArticleDescription dangerouslySetInnerHTML={{ __html: article.text }} />
+      <CommentHeading>Comments</CommentHeading>
+      <HorizontalLine />
+      <Comments allComments={article.kids} indent={0} isReply={false} />
+    </ArticleContainer>
   );
 };
 

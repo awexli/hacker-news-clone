@@ -18,41 +18,33 @@ export default class ApiService {
   }
 
   static getNewCommentBatch(req) {
-    const { allComments, currentIndex, nextIndex } = req;
-    const newCommentBatch = allComments.slice(currentIndex, nextIndex);
-    const newCommentsPromise = newCommentBatch.map((id) =>
-      ApiService.getCommentFromId(id)
-    );
+    const { commentIds, from, to } = req;
+    const newCommentBatch = commentIds.slice(from, to);
+    const newCommentsPromise = newCommentBatch.map((id) => ApiService.getCommentFromId(id));
 
     return Promise.all(newCommentsPromise);
   }
 
   static getCommentReplies(kids) {
-    const commentRepliesPromise = kids.map((id) =>
-      ApiService.getCommentFromId(id)
-    );
+    const commentRepliesPromise = kids.map((id) => ApiService.getCommentFromId(id));
 
     return Promise.all(commentRepliesPromise);
   }
 
-  // TODO: add ability to recurse specified amount of levels
+  /**
+   *
+   * @param {Object} req given comments, current index, and next index
+   * @returns an array of comment ids
+   */
   static async getComments(req) {
-    try {
-      const comments = await ApiService.getNewCommentBatch(req);
-
-      for (const comment of comments) {
-        const kids = comment.data.kids;
-        if (kids) {
-          comment.data.kids = await ApiService.getCommentReplies(kids);
-        }
-      }
-
-      return comments;
-    } catch (error) {
-      console.log('getComments error - ' + error);
-    }
-
-    return [];
+    // TODO: add ability to recurse specified amount of levels
+    // for (const comment of comments) {
+    //   const kids = comment.data.kids;
+    //   if (kids) {
+    //     comment.data.kids = await ApiService.getCommentReplies(kids);
+    //   }
+    // }
+    return await ApiService.getNewCommentBatch(req);
   }
 
   static getUserFromId(id) {

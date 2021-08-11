@@ -1,6 +1,6 @@
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
-import Article from './components/Article';
+import Article from './components/article';
 
 const GlobalStyles = createGlobalStyle`
   html {
@@ -17,13 +17,23 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
+const MainContainer = styled.main`
+  background-color: var(--color-background-dark);
+  margin: 0 auto;
+  max-width: 60em;
+  min-height: 100vh;
+  color: var(--color-text);
+`;
+
 function App() {
   // someone clicks on an article card
   // article card
   return (
     <div className="App">
       <GlobalStyles />
-      <Article id={'25700135'}></Article>
+      <MainContainer>
+        <Article id={'25700135'}></Article>
+      </MainContainer>
     </div>
   );
 }
