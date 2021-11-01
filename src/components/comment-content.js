@@ -109,7 +109,11 @@ export const CommentContent = ({ data, isReply, indent }) => {
         {/* View Replies Button */}
         {data.kids && (
           <ReplyWrapper show={show}>
-            <ViewRepliesButton handleReplies={handleReplies} hasViewedReplies={hasViewedReplies} numOfReplies={data.kids.length} />
+            <ViewRepliesButton
+              handleReplies={handleReplies}
+              hasViewedReplies={hasViewedReplies}
+              numOfReplies={data.kids.length}
+            />
           </ReplyWrapper>
         )}
 

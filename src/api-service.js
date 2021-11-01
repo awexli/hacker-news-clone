@@ -37,7 +37,6 @@ export default class ApiService {
    * @returns an array of comment ids
    */
   static async getComments(req) {
-    // TODO: add ability to recurse specified amount of levels
     // for (const comment of comments) {
     //   const kids = comment.data.kids;
     //   if (kids) {

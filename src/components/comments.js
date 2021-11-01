@@ -15,9 +15,17 @@ const Comments = ({ allComments, indent, isReply, levelsToRecurse }) => {
   const [comments, setComments] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoadingMoreComments, setIsLoadingMoreComments] = useState(false);
-  const [hasMore, setHasMore] = useState(levelsToRecurse < 1 ? false : true);
+  const [hasMoreComments, setHasMoreComments] = useState(levelsToRecurse < 1 ? false : true);
 
-  const handleComments = async (commentIds, currentIndex, nextIndex) => {
+  useEffect(() => {
+    (async () => {
+      if (!allComments) return;
+      await handleFetchComments(allComments, currentIndex, numOfCommentsToAdd);
+    })();
+    // eslint-disable-next-line
+  }, [allComments]);
+
+  const handleFetchComments = async (commentIds, currentIndex, nextIndex) => {
     try {
       const fetchedComments = await ApiService.getComments({
         commentIds,
@@ -25,8 +33,8 @@ const Comments = ({ allComments, indent, isReply, levelsToRecurse }) => {
         to: nextIndex,
       });
 
-      if (fetchedComments.length < nextIndex || allComments >= fetchedComments.length) {
-        setHasMore(false);
+      if (fetchedComments.length < numOfCommentsToAdd) {
+        setHasMoreComments(false);
       }
 
       setCurrentIndex(nextIndex);
@@ -36,17 +44,9 @@ const Comments = ({ allComments, indent, isReply, levelsToRecurse }) => {
     }
   };
 
-  useEffect(() => {
-    (async () => {
-      if (!allComments) return;
-      await handleComments(allComments, currentIndex, numOfCommentsToAdd);
-    })();
-    // eslint-disable-next-line
-  }, [allComments]);
-
-  const handleMoreComments = async () => {
+  const handleFetchMoreComments = async () => {
     setIsLoadingMoreComments(true);
-    await handleComments(allComments, currentIndex, currentIndex + numOfCommentsToAdd);
+    await handleFetchComments(allComments, currentIndex, currentIndex + numOfCommentsToAdd);
     setIsLoadingMoreComments(false);
   };
 
@@ -68,8 +68,8 @@ const Comments = ({ allComments, indent, isReply, levelsToRecurse }) => {
       {isLoadingMoreComments ? (
         <LoadingText />
       ) : (
-        hasMore && (
-          <Button onClick={handleMoreComments} margin={'4px 0'}>
+        hasMoreComments && (
+          <Button onClick={handleFetchMoreComments} margin={'4px 0'}>
             load more comments
           </Button>
         )
