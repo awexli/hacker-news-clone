@@ -13,10 +13,10 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import Client, { Article } from '../api/client';
+import Client, { Item } from '../api/client';
 import { formatCreatedDate, getRelativeDate } from '../common/utils';
 
-export const UserModal = ({ item }: { item: Article }) => {
+export const UserModal = ({ item }: { item: Item }) => {
   const [author, setAuthor] = useState<string>();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { data, isFetching } = useQuery(

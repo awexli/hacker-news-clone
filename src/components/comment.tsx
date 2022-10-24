@@ -1,11 +1,11 @@
 import { Box, Button, Flex } from '@chakra-ui/react';
 import { useState } from 'react';
-import { Article } from '../api/client';
+import { Item } from '../api/client';
 import { Comments } from './comments';
 import { UserModal } from './user-modal';
 
 export const Comment = (props: {
-  comment: Article;
+  comment: Item;
   isReplyComment: boolean;
   indent: number;
 }) => {

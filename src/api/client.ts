@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
-export type Article = {
+export type Item = {
   by: string;
   descendants: number;
   id: number;
@@ -13,7 +13,7 @@ export type Article = {
   deleted: boolean;
   dead: boolean;
   parent: number;
-  newKids: Article[];
+  newKids: Item[];
 };
 
 const client = (() => {
@@ -44,7 +44,7 @@ export default class Client {
     return request(getItem(id));
   }
 
-  static getCommentFromId(id: number) {
+  static getCommentFromId(id: number): Promise<Item> {
     return request(getItem(id));
   }
 
@@ -55,29 +55,30 @@ export default class Client {
     return request({ url: `/user/${author}.json`, method: 'GET' });
   }
 
-  static async getAllComments(item: Article | undefined): Promise<Article> {
+  static async getAllComments(item: Item | undefined): Promise<Item> {
     if (typeof item === 'undefined') {
       return Promise.reject(new Error('Invalid Item'));
     }
 
     let level = 0;
-    const response: Record<string, Article> = {};
-    const recurse = async (item: Article): Promise<void> => {
-      if (item && item.kids) {
-        item.newKids = [];
+    const response: Record<string, Item> = {};
+
+    const recurse = async (tempItem: Item): Promise<void> => {
+      if (tempItem && tempItem.kids) {
+        tempItem.newKids = [];
 
         const fetchedComments = await Promise.all(
-          item.kids.map((id) => {
+          tempItem.kids.map((id) => {
             return this.getCommentFromId(id);
           })
         );
 
         await Promise.all(
           fetchedComments.map((newItem) => {
-            item.newKids = [...item.newKids, newItem];
+            tempItem.newKids = [...tempItem.newKids, newItem];
 
-            if (!response[item.id] && level === 0) {
-              response[item.id] = item;
+            if (!response[tempItem.id] && level === 0) {
+              response[tempItem.id] = tempItem;
               level++;
             }
 
@@ -89,6 +90,7 @@ export default class Client {
 
     const tempItem = { ...item, newKids: [] };
     await recurse(tempItem);
+    console.log(response);
     return response[tempItem.id];
   }
 }

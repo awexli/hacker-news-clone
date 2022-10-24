@@ -1,9 +1,9 @@
 import { Box, Button, Divider } from '@chakra-ui/react';
-import { Article } from '../api/client';
+import { Item } from '../api/client';
 import { Comment } from './comment';
 
 export const Comments = (props: {
-  comments: Article[];
+  comments: Item[];
   isReplyComment: boolean;
   indent: number;
   levelsToRecurse?: number;

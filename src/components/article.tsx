@@ -9,15 +9,15 @@ import {
 } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import Client, { Article as ArticleType } from '../api/client';
+import Client, { Item } from '../api/client';
 import { getRelativeDate } from '../common/utils';
 import { Comments } from './comments';
 import { UserModal } from './user-modal';
 
 export const Article = (props: { id: number }) => {
-  const [article, setArticle] = useState<ArticleType>();
+  const [article, setArticle] = useState<Item>();
   const [articleKids, setArticleKids] = useState<number[]>();
-  const [renderedComments, setRenderedComments] = useState<ArticleType[]>([]);
+  const [renderedComments, setRenderedComments] = useState<Item[]>([]);
 
   const { data: articleData, isLoading: isArticleLoading } = useQuery(
     ['article', props.id],
