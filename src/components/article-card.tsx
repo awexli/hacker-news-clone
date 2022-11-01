@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import { TriangleUpIcon } from '@chakra-ui/icons';
 
-export const ArticleCard = (props: any) => {
+export const ArticleCard = () => {
   const tempArticleData = {
     title: "Lorem ipsum dolor sit amet et delectus accommodare his consul copiosae",
     time: "2 weeks ago",

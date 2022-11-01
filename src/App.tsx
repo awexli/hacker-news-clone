@@ -55,7 +55,7 @@ function App() {
             color="hn.text"
           >
             {/* <Article id={33297934}></Article> */}
-            <ArticleCard theme={theme} />
+            <ArticleCard />
           </Container>
         </Box>
       </ChakraProvider>
