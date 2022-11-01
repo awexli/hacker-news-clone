@@ -1,5 +1,6 @@
 import { Box, Container } from '@chakra-ui/react';
 import { Article } from './components/article';
+import { ArticleCard } from './components/article-card';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -53,7 +54,8 @@ function App() {
             minHeight="100vh"
             color="hn.text"
           >
-            <Article id={33297934}></Article>
+            {/* <Article id={33297934}></Article> */}
+            <ArticleCard />
           </Container>
         </Box>
       </ChakraProvider>
