@@ -15,7 +15,7 @@ export const ArticleCard = () => {
 
       <Box display="flex" justifyContent="space-evenly" p="6">
 
-        <Box mr="4">
+        <Box mr="3">
           <TriangleUpIcon />
         </Box>
 
