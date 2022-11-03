@@ -13,7 +13,7 @@ export const ArticleCard = () => {
   return (
     <Box borderWidth="1px" borderRadius="lg" overflow="hidden">
 
-      <Box display="flex" justifyContent="space-evenly" p="6">
+      <Box display="flex" p="6">
 
         <Box mr="3">
           <TriangleUpIcon />
