@@ -1,5 +1,4 @@
-import { Box } from '@chakra-ui/react';
-import { TriangleUpIcon } from '@chakra-ui/icons';
+import { Box, Text } from '@chakra-ui/react';
 
 export const ArticleCard = () => {
   const tempArticleData = {
@@ -12,13 +11,7 @@ export const ArticleCard = () => {
 
   return (
     <Box borderWidth="1px" borderRadius="lg" overflow="hidden">
-
       <Box display="flex" p="6">
-
-        <Box mr="3">
-          <TriangleUpIcon />
-        </Box>
-
         <Box>
           <Box
             fontWeight="bold"
@@ -27,16 +20,14 @@ export const ArticleCard = () => {
             lineHeight="tight"
             fontSize="lg"
             mb="3"
+            color="hn.off_white"
           >
             {tempArticleData.title}
           </Box>
 
           <Box>
-            {tempArticleData.time}
-          </Box>
-
-          <Box>
-            {tempArticleData.score} points | {tempArticleData.descendants} comments | by&nbsp;{tempArticleData.by}
+            {tempArticleData.score} points | {tempArticleData.descendants} comments | by&nbsp;<Text as="span" color="hn.off_white" fontWeight="bold">{tempArticleData.by}&nbsp;</Text>
+            <Text as="span" color="hn.grey" fontWeight="bold">{tempArticleData.time}</Text>
           </Box>
         </Box>
       </Box>
