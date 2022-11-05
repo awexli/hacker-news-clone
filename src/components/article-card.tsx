@@ -3,7 +3,7 @@ import { Box, Text } from '@chakra-ui/react';
 export const ArticleCard = ({ articleData }: any) => {
 
   return (
-    <Box borderWidth="1px" borderRadius="lg" overflow="hidden">
+    <Box data-testid="article-card" borderWidth="1px" borderRadius="lg" overflow="hidden">
       <Box display="flex" p="6">
         <Box>
           <Box
