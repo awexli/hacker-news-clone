@@ -45,6 +45,5 @@ it('should render an ArticleCard component', () => {
 it('should render 4 ArticleCard components', () => {
   render(<ArticleList tempData={tempData} />);
   const articleCardList = screen.getAllByTestId('article-card');
-  console.log(articleCardList);
   expect(articleCardList).toHaveLength(4);
 });
