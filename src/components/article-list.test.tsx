@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { ArticleCard } from './article-card';
+import { ArticleList } from './article-list';
 
 const tempData = [
   {
@@ -36,8 +36,14 @@ const tempData = [
   },
 ];
 
-it('should render ArticleCard component to the screen', () => {
-  render(<ArticleCard articleData={tempData[0]} />);
-  const linkElement = screen.getByText(/Jaysteez/i);
-  expect(linkElement).toBeInTheDocument();
+it('should render an ArticleCard component', () => {
+  render(<ArticleList tempData={[tempData[0]]} />);
+  const articleCardComponent = screen.getByTestId('article-card');
+  expect(articleCardComponent).toBeInTheDocument();
+});
+
+it('should render 4 ArticleCard components', () => {
+  render(<ArticleList tempData={tempData} />);
+  const articleCardList = screen.getAllByTestId('article-card');
+  expect(articleCardList).toHaveLength(4);
 });
