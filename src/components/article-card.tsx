@@ -1,6 +1,6 @@
 import { Box, Text } from '@chakra-ui/react';
 
-export const ArticleCard = ({ articleData }: any) => {
+export const ArticleCard = ({ articleData }: {articleData: Record<string, any>}) => {
 
   return (
     <Box data-testid="article-card" borderWidth="1px" borderRadius="lg" overflow="hidden">
