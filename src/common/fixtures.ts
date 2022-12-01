@@ -1,7 +1,4 @@
-import { render, screen } from '@testing-library/react';
-import { ArticleList } from './article-list';
-
-const tempData = [
+export const tempArticlesData = [
   {
     id: 1,
     title: "1Lorem ipsum dolor sit amet et delectus accommodare his consul copiosae",
@@ -35,15 +32,3 @@ const tempData = [
     descendants: "808"
   },
 ];
-
-it('should render an ArticleCard component', () => {
-  render(<ArticleList />);
-  const articleCardComponent = screen.getByTestId('article-card');
-  expect(articleCardComponent).toBeInTheDocument();
-});
-
-it('should render 4 ArticleCard components', () => {
-  render(<ArticleList />);
-  const articleCardList = screen.getAllByTestId('article-card');
-  expect(articleCardList).toHaveLength(4);
-});

@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { tempArticlesData } from '../common/fixtures';
 
 export type Article = {
   by: string;
@@ -90,5 +91,9 @@ export default class Client {
     const tempItem = { ...item, newKids: [] };
     await recurse(tempItem);
     return response[tempItem.id];
+  }
+
+  static getTempArticleData() {
+    return Promise.resolve(tempArticlesData);
   }
 }
