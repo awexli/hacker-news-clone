@@ -10,7 +10,6 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import Client, { Item } from '../api/client';
-import { getRelativeDate } from '../common/utils';
 import { Comments } from './comments';
 import { UserModal } from './user-modal';
 

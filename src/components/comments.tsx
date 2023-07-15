@@ -1,4 +1,4 @@
-import { Box, Button, Divider } from '@chakra-ui/react';
+import { Box, Divider } from '@chakra-ui/react';
 import { Item } from '../api/client';
 import { Comment } from './comment';
 

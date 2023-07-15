@@ -60,37 +60,28 @@ export default class Client {
       return Promise.reject(new Error('Invalid Item'));
     }
 
-    let level = 0;
-    const response: Record<string, Item> = {};
+    const rootItem = { ...item };
 
-    const recurse = async (tempItem: Item): Promise<void> => {
-      if (tempItem && tempItem.kids) {
-        tempItem.newKids = [];
-
-        const fetchedComments = await Promise.all(
-          tempItem.kids.map((id) => {
-            return this.getCommentFromId(id);
-          })
-        );
-
-        await Promise.all(
-          fetchedComments.map((newItem) => {
-            tempItem.newKids = [...tempItem.newKids, newItem];
-
-            if (!response[tempItem.id] && level === 0) {
-              response[tempItem.id] = tempItem;
-              level++;
-            }
-
-            return recurse(newItem);
-          })
-        );
+    const recurse = async (parent: Item): Promise<void> => {
+      if (!parent?.kids?.length) {
+        return;
       }
+
+      parent.newKids = [] as Item[];
+
+      const comments = await Promise.all(parent.kids.map((id) => this.getCommentFromId(id)));
+
+      await Promise.all(
+        comments.map((comment) => {
+          parent.newKids.push(comment);
+
+          return recurse(comment);
+        })
+      );
     };
 
-    const tempItem = { ...item, newKids: [] };
-    await recurse(tempItem);
-    console.log(response);
-    return response[tempItem.id];
+    await recurse(rootItem);
+
+    return rootItem;
   }
 }

@@ -8,7 +8,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  SkeletonText,
   useDisclosure,
 } from '@chakra-ui/react';
 import { useState } from 'react';
